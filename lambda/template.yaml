@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: test1-dev
+      CodeUri: test1/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Layers:
+        - !Ref TempConversionDepLayer
+
+  HelloWorldFunction2:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: test2-dev
+      CodeUri: test2/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Layers:
+        - !Ref TempConversionDepLayer
+
+  HelloWorldFunction3:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: test1-prod
+      CodeUri: test2/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Layers:
+        - !Ref TempConversionDepLayer
+
+  TempConversionDepLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: sam-app-dependencies
+      Description: ''
+      ContentUri: dependencies/
+      CompatibleRuntimes:
+        - nodejs14.x
+      LicenseInfo: 'MIT'
+      RetentionPolicy: Retain
+
